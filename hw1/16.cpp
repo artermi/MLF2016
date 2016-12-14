@@ -7,6 +7,7 @@
 
 using namespace std;
 
+int total_up = 0;
 class one_data{
 	public:
 	double x[5];
@@ -70,11 +71,12 @@ int main(){
 		double w[5] = {0,0,0,0,0};
 		do_once(w,data,data_count);
 	}
-
+/*
 	for(int i =0; i<200; i++){
 		cout << data_count[i] <<endl;
 	}
-//	cout << total_up/2000 <<endl;
+*/
+	cout << (double)total_up/2000 <<endl;
 
 	return 0;
 }
@@ -84,5 +86,6 @@ void do_once(double w[],vector<one_data> data, int data_count[]){
 	while(contain_mistake(w,data)){
 		do_update(w,data,total);
 	}
-	data_count[total] ++;
+	total_up += total;
+	cout << total <<endl;
 }

@@ -110,16 +110,17 @@ int main(){
 			if(is_mistake(w,dat))
 				error_num ++;
 		}
-		error_rate[error_num / 5] ++;
+//		error_rate[error_num / 5] ++;
 
-//		cout << ((double) error_num)  / 500.0 <<endl;
+		cout <<  error_num <<endl;
 		aver += error_num;
 	}
 	cout << aver / (2000.0*500.0) <<endl;
 
-	for(int i =0; i < 100; i++){
+/*	for(int i =0; i < 100; i++){
 		cout << error_rate[i] <<endl;
 	}
+	*/
 //	cout << total_up/2000 <<endl;
 
 	return 0;
@@ -132,4 +133,5 @@ void do_once(double w[],vector<one_data> data){
 		if(total <= 0)
 			break;
 	}
+//	cout << error_rate(w,data) <<endl;
 }
