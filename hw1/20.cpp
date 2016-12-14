@@ -93,7 +93,7 @@ int main(){
 //		cout << ((double) error_num)  / 500.0 <<endl;
 		aver += error_num;
 	}
-	cout << aver / (2000.0*500.0) <<endl;
+	cout << aver / (2000.0) <<endl;
 
 /*	for(int i =0; i < 100; i++){
 		cout << error_rate[i] <<endl;
