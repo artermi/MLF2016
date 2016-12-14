@@ -55,16 +55,19 @@ bool new_perform_better(double w[],vector<one_data> &data,int now){
 	return (error_data(w_old,data) > error_data(w_new,data));
 }
 
-void do_update(double w[],vector<one_data> &data,int &total){
-	for(int i = 0; i < data.size();i++){
-		if(is_mistake(w,data[i])){
-			if(new_perform_better(w,data,i))
-				add_to_w(w,data[i]);		
-			total --;
-		}
-		if(total == 0)
-			break;
+void do_update(double w[],vector<one_data> &data,int &total,double best[]){
+	int i = rand() % data.size();
+	if(total <= 0)
+		return;
+	if(is_mistake(w,data[i])){
+		add_to_w(w,data[i]);
+		if(error_data(w,data) < error_data(best,data))
+			for(int i = 0; i < 5; i ++)
+				best[i] = w[i];
+
+		total --;
 	}
+	
 }
 
 void do_once(double w[],vector<one_data> data);
@@ -92,7 +95,7 @@ int main(){
 	double aver = 0.0;
 	for(int i = 0; i < 2000; i++){
 //		cout << "run " << i+1 << endl;
-		shuffle_data(data);
+//		shuffle_data(data);
 		double w[5] = {0,0,0,0,0};
 		do_once(w,data); //with 50 update
 		ifstream file_test("18.test");
@@ -110,17 +113,18 @@ int main(){
 			if(is_mistake(w,dat))
 				error_num ++;
 		}
-//		error_rate[error_num / 5] ++;
 
 		cout <<  error_num <<endl;
 		aver += error_num;
-	}
-	cout << aver / (2000.0*500.0) <<endl;
+		error_rate[error_num / 5] ++;
 
-/*	for(int i =0; i < 100; i++){
-		cout << error_rate[i] <<endl;
 	}
-	*/
+	cout << aver / (2000.0) <<endl;
+/*
+	for(int i =0; i < 100; i++){
+		cout << i <<' ' << error_rate[i] <<endl;
+	}
+*/	
 //	cout << total_up/2000 <<endl;
 
 	return 0;
@@ -128,10 +132,12 @@ int main(){
 
 void do_once(double w[],vector<one_data> data){
 	int total = 50;
+	double best[5] = {0,0,0,0,0};
 	while(contain_mistake(w,data)){
-		do_update(w,data,total);
+		do_update(w,data,total,best);
 		if(total <= 0)
 			break;
 	}
-//	cout << error_rate(w,data) <<endl;
+	for(int i =0; i< 5; i ++)
+		w[i] = best[i];
 }
