@@ -9,42 +9,46 @@ def sigmoid(s):
 eta = 0.001
 T = 2000
 
-def DE_in(data,w):
-    de_in = a([0.0 for i in range(20)])
+def DE_in(data,w,y):
+    de_in = a([0.0 for i in range(21)])
+    i = 0
     for dat in data:
-        de_in += sigmoid(- np.dot(dat[1:],w) * dat[0] ) * (-1 * (dat[0]) * dat[1:])
+        de_in += sigmoid(- np.dot(dat,w) * y[i] ) * (-1 * y[i] * dat)
 
 #    print de_in
     return de_in / len(data)
 
-def error(x,w):
-    return 1 if  x[0] * np.dot(x[1:],w) < 0 else 0
+def error(x,w,y):
+    return 1 if  y * np.dot(x,w) < 0 else 0
 #    return  m.log(1 + m.exp(-np.dot(x[1:],w) * x[0]))
         
 
 data = []
-
+value = []
 for line in open('11.train','r'):
-    x = a([0.0 for i in range(21)])
-    for i in range(len(line.split() ) ):
-        x[(i + 1)% 21] = line.split()[i]
+    x = a([1.0 for i in range(21)])
+    for i in range(len(line.split())-1 ):
+        x[ i + 1] = line.split()[i]
+    value.append(int(line.split()[-1]))
     data.append(x)
 
 
-w = a([0] * 20)
+w = a([0] * 21)
 
 for i in range(T):
-    grad = DE_in(data,w)
+    grad = DE_in(data,w,value)
     w = w - eta * grad
 
 
 err = 0.0
 N = 0
+
 for line in open('11.test','r'):
-    x = a([0.0 for i in range(21)])
-    for i in range(len(line.split() ) ):
-        x[(i + 1)% 21] = line.split()[i]
-    err += error(x,w)
+    x = a([1.0 for i in range(21)])
+    for i in range(len(line.split() )-1 ):
+        x[i + 1] = line.split()[i]
+    vout = int (line.split()[-1])
+    err += error(x,w,vout)
 #    print(err)
     N += 1
 
